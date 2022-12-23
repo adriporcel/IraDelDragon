@@ -1,5 +1,4 @@
-CC Project
-This project is licensed under the Creative Commons Attribution 4.0 International license. This means that you are free to use and share the content of this project as long as you give appropriate credit to the original creators and provide a link to the license.
+This project is licensed under the CC0-1.0 license license. This means that you are free to use and share the content of this project as long as you give appropriate credit to the original creators and provide a link to the license.
 
 Art Credits
 The following artists who created the ilustrations in the original card game:
@@ -26,8 +25,8 @@ As well as thanks to Ximocm for the scan of all the cards.
 Attribution
 If you use any content from this project, please make sure to include the following attribution:
 
-Is used with permission under the Creative Commons Attribution 4.0 International license.
+Is used with permission under the CC0-1.0 license license.
 Project creator: https://github.com/adriporcel
 Resources provided by: http://lairadeldragon.blogspot.com/
-License: https://creativecommons.org/licenses/by/4.0/
+
 Thank you for respecting the rights of the creators and contributors of this project.
