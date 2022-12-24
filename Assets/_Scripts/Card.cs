@@ -5,11 +5,13 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     [SerializeField] ScriptableCard scriptableCard;
-    
-    [SerializeField] Sprite artwork;
+    [SerializeField] GameObject front;
 
     void Start()
     {
-        artwork = scriptableCard.artwork;
+        Material material = new Material(Shader.Find("Standard"));
+        material.mainTexture = scriptableCard.artwork;
+
+        front.GetComponent<MeshRenderer>().material = material;
     }
 }
