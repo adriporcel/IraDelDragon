@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Card", menuName = "Card")]
 public class ScriptableCard : ScriptableObject
 {
+    public MonoScript script;
     public Texture2D artwork;
     public Deck deck;
     public CardType cardType;
@@ -27,6 +29,5 @@ public class ScriptableCard : ScriptableObject
     public int defense;
 
     public bool hands; // Determines if the creature can hold magical objects
-    public bool fly;
     public bool nightCreature;
 }

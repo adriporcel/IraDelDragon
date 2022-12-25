@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11a69ef3ac2512842969ad8b42c12a13, type: 3}
-  m_Name: Fantasma
+  m_Name: TribuDelmamut
   m_EditorClassIdentifier: 
-  artwork: {fileID: 2800000, guid: d1ec467ffead82e44bb84abc7afdf3d6, type: 3}
+  script: {fileID: 0}
+  artwork: {fileID: 2800000, guid: afae77b84b5c6bc40911ebe6763f6956, type: 3}
   deck: 2
   cardType: 2
-  redCost: 0
+  objectType: 0
+  redCost: 1
   greenCost: 0
-  blueCost: 2
+  blueCost: 1
   greyCost: 0
-  name: CriaturaDeTrull
+  name: TribuDelmamut
   canTarget: 0700000002000000
-  magicalNumber: 2
+  magicalNumber: 1
   hidden: 0
-  attack: 2
-  defense: 2
-  hands: 0
-  fly: 0
+  attack: 1
+  defense: 1
+  hands: 1
   nightCreature: 0
-  objectsEquiped: []
