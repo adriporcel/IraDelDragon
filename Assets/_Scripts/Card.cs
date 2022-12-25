@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,5 +14,9 @@ public class Card : MonoBehaviour
         material.mainTexture = scriptableCard.artwork;
 
         front.GetComponent<MeshRenderer>().material = material;
+
+        gameObject.AddComponent(scriptableCard.script.GetClass());
+
+        Debug.Log($"{scriptableCard.name}, {scriptableCard.artwork.name}");
     }
 }

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a69ef3ac2512842969ad8b42c12a13, type: 3}
+  m_Name: Nessers
+  m_EditorClassIdentifier: 
+  script: {fileID: 0}
+  artwork: {fileID: 2800000, guid: 44d5efe36a68e424cac028c4df729dfd, type: 3}
+  deck: 2
+  cardType: 2
+  objectType: 0
+  redCost: 0
+  greenCost: 0
+  blueCost: 3
+  greyCost: 0
+  name: Nessers
+  canTarget: 0700000002000000
+  magicalNumber: 1
+  hidden: 0
+  attack: 3
+  defense: 3
+  hands: 0
+  nightCreature: 0
