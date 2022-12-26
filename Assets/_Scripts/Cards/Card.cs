@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-    [SerializeField] ScriptableCard scriptableCard;
+    public ScriptableCard scriptableCard { get; set; }
     [SerializeField] GameObject front;
 
     void Start()
@@ -15,7 +15,8 @@ public class Card : MonoBehaviour
 
         front.GetComponent<MeshRenderer>().material = material;
 
-        gameObject.AddComponent(scriptableCard.script.GetClass());
+        if (scriptableCard.script != null)
+            gameObject.AddComponent(scriptableCard.script.GetClass());
 
         Debug.Log($"{scriptableCard.name}, {scriptableCard.artwork.name}");
     }
