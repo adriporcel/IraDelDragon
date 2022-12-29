@@ -24,15 +24,17 @@ public class GameManager : MonoBehaviour
         {
             availableCards.Add(obj);
         }
+
+        SpawnCard();
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            print("CARD");
-            SpawnCard();
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    print("CARD");
+        //    SpawnCard();
+        //}
     }
 
     public void SpawnCard()
