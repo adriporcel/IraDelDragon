@@ -13,16 +13,16 @@ public class Controls : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                print(hit.collider.tag);
                 if (hit.collider.tag == "card")
                 {
-                    Debug.Log(hit.collider.name);
+                    print(hit.collider.gameObject.GetComponent<Card>().Name);
+                    GameManager.instance.SelectCard(hit.collider.gameObject);
                 }
             }
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonDown(1))
         {
-
+            GameManager.instance.SelectCard(null);
         }
     }
 }
