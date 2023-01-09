@@ -4,45 +4,57 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public List<ScriptableCard> availableCards;
+    public static GameManager instance;
 
-    [SerializeField] GameObject baseCard;
-    [SerializeField] bool debugMode;
+    public GameState gameState;
+    public GameObject selectedCard;
 
-    GameObject newCard;
+    [SerializeField] bool _debugMode;
+    [SerializeField] DeckController deckController;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {
         Application.targetFrameRate = 144; // TODO: create setting
-        if (debugMode)
+        if (_debugMode)
         {
             UnityEditor.EditorWindow.FocusWindowIfItsOpen(typeof(UnityEditor.SceneView));
         }
-
-        ScriptableCard[] objects = Resources.LoadAll<ScriptableCard>("Decks/Blue");
-        foreach (ScriptableCard obj in objects)
-        {
-            availableCards.Add(obj);
-        }
-
-        SpawnCard();
     }
 
     private void Update()
     {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    print("CARD");
-        //    SpawnCard();
-        //}
+        return; // TODO: implement states
+        switch (gameState)
+        {
+            case GameState.start:
+                deckController.InitialDeal();
+                break;
+            case GameState.mainPlayerTurn:
+                break;
+            case GameState.secondPlayerTurn:
+                break;
+            case GameState.endGame:
+                break;
+            default:
+                break;
+        }
     }
 
-    public void SpawnCard()
+    public void SelectCard(GameObject card)
     {
-        if (newCard != null)
-            Destroy(newCard);
-        newCard = Instantiate(baseCard);
-        newCard.transform.position = new Vector3(0,0,-9);
-        newCard.GetComponent<Card>().scriptableCard = availableCards[Random.Range(0, availableCards.Count)];
+        selectedCard = card;
     }
 }
