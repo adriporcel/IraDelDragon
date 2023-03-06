@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
         {
             UnityEditor.EditorWindow.FocusWindowIfItsOpen(typeof(UnityEditor.SceneView));
         }
+
+        deckController.InitialDeal(); // DEBUG remove
     }
 
     private void Update()

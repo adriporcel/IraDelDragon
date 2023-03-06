@@ -43,15 +43,21 @@ public class DeckController : MonoBehaviour
     void DealCard(Players _player)
     {
         newCard = Instantiate(_baseCard);
-        newCard.GetComponent<Card>().scriptableCard = availableCards[Random.Range(0, availableCards.Count)];
+        Card _cardComponent = newCard.GetComponent<Card>();
+
+        _cardComponent.Owner = _player;
+        _cardComponent.scriptableCard = availableCards[Random.Range(0, availableCards.Count)];
 
         if (_player == Players.main)
         {
-
+            _cardComponent.BoardPosition = BoardPosition.handMain;
+            newCard.transform.SetParent(_handMain.transform);
         }
         else
         {
-
+            _cardComponent.BoardPosition = BoardPosition.handSecond;
+            newCard.transform.Rotate(new Vector3(0,0,1), 180);
+            newCard.transform.SetParent(_handSecond.transform);
         }
     }
 

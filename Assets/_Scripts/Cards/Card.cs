@@ -2,11 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
+    public Players Owner { get; set; }
+    public BoardPosition BoardPosition { get; set; }
     public ScriptableCard scriptableCard { get; set; }
+
+    public UnityEvent cardAction;
 
     [SerializeField] GameObject _front;
 
@@ -26,7 +31,6 @@ public class Card : MonoBehaviour
     public ObjectType ObjectType { get { return scriptableCard.objectType; } }
     public List<CardType> CanTarget { get { return scriptableCard.canTarget; } }
 
-
     void Start()
     {
         //gameObject.GetComponent<Image>().rectTransform.sizeDelta = new Vector2(.59f, .89f);
@@ -39,5 +43,10 @@ public class Card : MonoBehaviour
             gameObject.AddComponent(scriptableCard.script.GetClass());
 
         //Debug.Log($"{scriptableCard.name}, {scriptableCard.artwork.name}");
+    }
+
+    public void CardAction()
+    {
+        cardAction.Invoke();
     }
 }

@@ -3,6 +3,15 @@ public enum Players
     main,
     secondary
 }
+public enum BoardPosition
+{
+    handMain,
+    playAreaMain,
+    bortherhoodAreaMain,
+    handSecond,
+    playAreaSecond,
+    bortherhoodAreaSecond,
+}
 public enum GameState
 {
     start,
