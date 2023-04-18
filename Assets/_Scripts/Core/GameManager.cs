@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public GameState gameState;
     public GameObject selectedCard;
 
-    [SerializeField] bool _debugMode;
+    [SerializeField] bool debugMode;
     [SerializeField] DeckController deckController;
 
     void Awake()
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 144; // TODO: create setting
-        if (_debugMode)
+        if (debugMode)
         {
             UnityEditor.EditorWindow.FocusWindowIfItsOpen(typeof(UnityEditor.SceneView));
         }
@@ -38,21 +38,22 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        return; // TODO: implement states
-        switch (gameState)
-        {
-            case GameState.start:
-                deckController.InitialDeal();
-                break;
-            case GameState.mainPlayerTurn:
-                break;
-            case GameState.secondPlayerTurn:
-                break;
-            case GameState.endGame:
-                break;
-            default:
-                break;
-        }
+        // TODO: implement states
+
+        //switch (gameState)
+        //{
+        //    case GameState.start:
+        //        deckController.InitialDeal();
+        //        break;
+        //    case GameState.mainPlayerTurn:
+        //        break;
+        //    case GameState.secondPlayerTurn:
+        //        break;
+        //    case GameState.endGame:
+        //        break;
+        //    default:
+        //        break;
+        //}
     }
 
     public void SelectCard(GameObject card)

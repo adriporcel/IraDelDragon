@@ -6,15 +6,15 @@ public class DeckController : MonoBehaviour
 {
     public List<ScriptableCard> availableCards;
 
-    [SerializeField] GameObject _baseCard;
+    [SerializeField] GameObject baseCard;
 
     [Header("Board Areas")]
-    [SerializeField] GameObject _playAreaSecond;
-    [SerializeField] GameObject _brotherhoodAreaSecond;
-    [SerializeField] GameObject _brotherhoodsAreaMain;
-    [SerializeField] GameObject _playAreaMain;
-    [SerializeField] GameObject _handSecond;
-    [SerializeField] GameObject _handMain;
+    [SerializeField] GameObject playAreaSecond;
+    [SerializeField] GameObject brotherhoodAreaSecond;
+    [SerializeField] GameObject brotherhoodsAreaMain;
+    [SerializeField] GameObject playAreaMain;
+    [SerializeField] GameObject handSecond;
+    [SerializeField] GameObject handMain;
 
     [Header("Game Settings")]
     [SerializeField] int initialNumberOfCards;
@@ -42,7 +42,7 @@ public class DeckController : MonoBehaviour
 
     void DealCard(Players _player)
     {
-        newCard = Instantiate(_baseCard);
+        newCard = Instantiate(baseCard);
         Card _cardComponent = newCard.GetComponent<Card>();
 
         _cardComponent.Owner = _player;
@@ -51,13 +51,13 @@ public class DeckController : MonoBehaviour
         if (_player == Players.main)
         {
             _cardComponent.BoardPosition = BoardPosition.handMain;
-            newCard.transform.SetParent(_handMain.transform);
+            newCard.transform.SetParent(handMain.transform);
         }
         else
         {
             _cardComponent.BoardPosition = BoardPosition.handSecond;
             newCard.transform.Rotate(new Vector3(0,0,1), 180);
-            newCard.transform.SetParent(_handSecond.transform);
+            newCard.transform.SetParent(handSecond.transform);
         }
     }
 
@@ -65,11 +65,11 @@ public class DeckController : MonoBehaviour
     {
         if (newCard.GetComponent<Card>().CardType == CardType.brotherhood)
         {
-            newCard.transform.SetParent(_brotherhoodsAreaMain.transform, false);
+            newCard.transform.SetParent(brotherhoodsAreaMain.transform, false);
         }
         else
         {
-            newCard.transform.SetParent(_playAreaMain.transform, false);
+            newCard.transform.SetParent(playAreaMain.transform, false);
         }
     }
 
