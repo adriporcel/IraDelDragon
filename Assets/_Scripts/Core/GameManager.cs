@@ -4,12 +4,26 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public List<ScriptableCard> availableCards;
+    public static GameManager instance;
 
-    [SerializeField] GameObject baseCard;
+    public GameState gameState;
+    public GameObject selectedCard;
+
     [SerializeField] bool debugMode;
+    [SerializeField] DeckController deckController;
 
-    GameObject newCard;
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {
@@ -19,30 +33,31 @@ public class GameManager : MonoBehaviour
             UnityEditor.EditorWindow.FocusWindowIfItsOpen(typeof(UnityEditor.SceneView));
         }
 
-        ScriptableCard[] objects = Resources.LoadAll<ScriptableCard>("Decks/Blue");
-        foreach (ScriptableCard obj in objects)
-        {
-            availableCards.Add(obj);
-        }
-
-        SpawnCard();
+        deckController.InitialDeal(); // DEBUG remove
     }
 
     private void Update()
     {
-        //if (Input.GetMouseButtonDown(0))
+        // TODO: implement states
+
+        //switch (gameState)
         //{
-        //    print("CARD");
-        //    SpawnCard();
+        //    case GameState.start:
+        //        deckController.InitialDeal();
+        //        break;
+        //    case GameState.mainPlayerTurn:
+        //        break;
+        //    case GameState.secondPlayerTurn:
+        //        break;
+        //    case GameState.endGame:
+        //        break;
+        //    default:
+        //        break;
         //}
     }
 
-    public void SpawnCard()
+    public void SelectCard(GameObject card)
     {
-        if (newCard != null)
-            Destroy(newCard);
-        newCard = Instantiate(baseCard);
-        newCard.transform.position = new Vector3(0,0,-9);
-        newCard.GetComponent<Card>().scriptableCard = availableCards[Random.Range(0, availableCards.Count)];
+        selectedCard = card;
     }
 }
