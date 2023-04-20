@@ -1,17 +1,13 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
     public Players Owner { get; set; }
     public BoardPosition BoardPosition { get; set; }
-    public ScriptableCard scriptableCard { get; set; }
+    public ScriptableCard ScriptableCard { get; set; }
 
     public UnityEvent cardAction;
     public bool ActiveBrotherhood { get; set; }
@@ -20,47 +16,65 @@ public class Card : MonoBehaviour
     public bool AvailableToUse { get; set; }
 
     [SerializeField] GameObject _front;
+
     // Visual feedback
-    [SerializeField] GameObject activeIndicator, readyToDeployIndicator;
+    [SerializeField] GameObject activeIndicator, usedIndicator, readyToDeployIndicator;
+    bool availableToUseLastCheck = true;
 
-    public string Name { get { return scriptableCard.name; } }
+    public string Name { get { return ScriptableCard.name; } }
+
     // Card cost
-    public int RedCost { get { return scriptableCard.redCost; } }
-    public int GreenCost { get { return scriptableCard.greenCost; } }
-    public int BlueCost { get { return scriptableCard.blueCost; } }
-    public int GreyCost { get { return scriptableCard.greyCost; } }
-    // Card stats
-    public int Attack { get { return scriptableCard.attack; } }
-    public int Defense { get { return scriptableCard.defense; } }
-    public int MagicalNumber { get { return scriptableCard.magicalNumber; } }
-    // Card properties and perks
-    public bool Hidden { get { return scriptableCard.hidden; } }
-    public bool Hands { get { return scriptableCard.hands; } }
-    public bool NightCreature { get { return scriptableCard.nightCreature; } }
+    public int RedCost { get { return ScriptableCard.redCost; } }
+    public int GreenCost { get { return ScriptableCard.greenCost; } }
+    public int BlueCost { get { return ScriptableCard.blueCost; } }
+    public int GreyCost { get { return ScriptableCard.greyCost; } }
 
-    public Deck Deck { get { return scriptableCard.deck; } }
-    public CardType CardType { get { return scriptableCard.cardType; } }
-    public ObjectType ObjectType { get { return scriptableCard.objectType; } }
-    public List<CardType> CanTarget { get { return scriptableCard.canTarget; } }
+    // Card stats
+    public int Attack { get { return ScriptableCard.attack; } }
+    public int Defense { get { return ScriptableCard.defense; } }
+    public int MagicalNumber { get { return ScriptableCard.magicalNumber; } }
+
+    // Card properties and perks
+    public bool Hidden { get { return ScriptableCard.hidden; } }
+    public bool Hands { get { return ScriptableCard.hands; } }
+    public bool NightCreature { get { return ScriptableCard.nightCreature; } }
+
+    public Deck Deck { get { return ScriptableCard.deck; } }
+    public CardType CardType { get { return ScriptableCard.cardType; } }
+    public ObjectType ObjectType { get { return ScriptableCard.objectType; } }
+    public List<CardType> CanTarget { get { return ScriptableCard.canTarget; } }
+
 
     void Start()
     {
-        //gameObject.GetComponent<Image>().rectTransform.sizeDelta = new Vector2(.59f, .89f);
-
+        // Set card artwork
         Material material = new Material(Shader.Find("Standard"));
-        material.mainTexture = scriptableCard.artwork;
+        material.mainTexture = ScriptableCard.artwork;
         _front.GetComponent<MeshRenderer>().material = material;
 
-        if (scriptableCard.script != null)
-            gameObject.AddComponent(scriptableCard.script.GetClass());
+        // Add script to card if specified
+        if (ScriptableCard.script != null)
+        { 
+            gameObject.AddComponent(ScriptableCard.script.GetClass());
+        }
     }
-
+    
     private void Update()
     {
-        GetComponentInChildren<TextMeshProUGUI>().text = $"ActiveBrotherhood: {ActiveBrotherhood}\n" +
-                                                         $"DeployedOnBoard: {DeployedOnBoard}\n" +
-                                                         $"ReadyToDeploy: {ReadyToDeploy}\n" +
-                                                         $"AvailableToUse: {AvailableToUse}\n";
+        if (DeployedOnBoard && AvailableToUse != availableToUseLastCheck)
+        {
+            usedIndicator.SetActive(!AvailableToUse);
+            availableToUseLastCheck = AvailableToUse;
+        }
+
+        // DEBUG
+        if (GameManager.instance.DebugMode  && GetComponentInChildren<TextMeshProUGUI>().enabled)
+        {
+            GetComponentInChildren<TextMeshProUGUI>().text = $"ActiveBrotherhood: {ActiveBrotherhood}\n" +
+                                                             $"DeployedOnBoard: {DeployedOnBoard}\n" +
+                                                             $"ReadyToDeploy: {ReadyToDeploy}\n" +
+                                                             $"AvailableToUse: {AvailableToUse}\n";
+        }
     }
 
     /// <summary>
@@ -78,7 +92,7 @@ public class Card : MonoBehaviour
     }
 
     /// <summary>
-    /// Gives the player visual feedback of which cards in hand can be deployed
+    /// Gives the player visual feedback of which cards in hand can be deployed depending on ReadyToDeploy variable
     /// </summary>
     public void ShowCardCanBeDeployed()
     {

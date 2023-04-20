@@ -1,10 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class DeckController : MonoBehaviour
 {
+    public Transform BrotherhoodsAreaSecond { get { return brotherhoodAreaSecond.transform; } }
+    public Transform PlayAreaSecond { get { return playAreaSecond.transform; } }
+    public Transform HandSecond { get { return handSecond.transform; } }
+    //
+    public Transform BrotherhoodsAreaMain { get { return brotherhoodsAreaMain.transform; } }
+    public Transform PlayAreaMain { get { return playAreaMain.transform; } }
+    public Transform HandMain { get { return handMain.transform; } }
+
+
     public List<ScriptableCard> availableCards;
 
     [SerializeField] GameObject baseCard;
@@ -13,6 +23,7 @@ public class DeckController : MonoBehaviour
     [SerializeField] GameObject brotherhoodAreaSecond;
     [SerializeField] GameObject playAreaSecond;
     [SerializeField] GameObject handSecond;
+    //
     [SerializeField] GameObject brotherhoodsAreaMain;
     [SerializeField] GameObject playAreaMain;
     [SerializeField] GameObject handMain;
@@ -107,7 +118,7 @@ public class DeckController : MonoBehaviour
     /// The magical Brotherhood points are used if necessary, only once.
     /// </summary>
     /// <param name="_card">The card to be played.</param>
-    public void UseUpActiveBrotherhoods(Card _card)
+    public void SpendBrotherhoodsPoints(Card _card)
     {
         if (_card.DeployedOnBoard) // Card cost has already been covered
             return;
@@ -231,6 +242,52 @@ public class DeckController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns the Transform to the corresponding Hand depending on player.
+    /// </summary>
+    /// <param name="_card">Card to read Player ownership from.</param>
+    public Transform CorrectHand(Card _card)
+    {
+        if (_card.Owner == Players.main)
+            return HandMain;
+        else
+            return HandSecond;
+    }
+
+    /// <summary>
+    /// Returns the Transform to the corresponding Board Area depending on player.
+    /// </summary>
+    /// <param name="_card">Card to read Player ownership & CardType from.</param>
+    public Transform CorrectBoardArea(Card _card)
+    {
+        switch (_card.Owner)
+        {
+            case Players.main:
+                if (_card.CardType == CardType.brotherhood)
+                {
+                    return BrotherhoodsAreaMain;
+                }
+                else if (_card.CardType == CardType.creature)
+                {
+                    return PlayAreaMain;
+                }
+                break;
+            case Players.secondary:
+                if (_card.CardType == CardType.brotherhood)
+                {
+                    return BrotherhoodsAreaSecond;
+                }
+                else if (_card.CardType == CardType.creature)
+                {
+                    return PlayAreaSecond;
+                }
+                break;
+        }
+
+        print("Card does not have a Player or Card type assigned!");
+        return _card.transform.parent.transform;
+    }
+
     void RoundStartSetCardsToAvailable()
     {
         foreach (Transform child in brotherhoodsAreaMain.transform)
@@ -273,7 +330,7 @@ public class DeckController : MonoBehaviour
         Card _cardComponent = newCard.GetComponent<Card>();
 
         _cardComponent.Owner = _player;
-        _cardComponent.scriptableCard = availableCards[UnityEngine.Random.Range(0, availableCards.Count)];
+        _cardComponent.ScriptableCard = availableCards[UnityEngine.Random.Range(0, availableCards.Count)];
 
         if (_player == Players.main)
         {
