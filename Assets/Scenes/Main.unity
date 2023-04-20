@@ -798,14 +798,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fdb60c71d92cf0644a210cf7e03673f3, type: 2}
   - {fileID: 11400000, guid: 9f3569eca70b52241b13f5ad0cdc5d34, type: 2}
   - {fileID: 11400000, guid: a90677f13a0886945816f28c9c388152, type: 2}
+  - {fileID: 11400000, guid: c01464e31b7c04a44bcd5f12ee5ac208, type: 2}
+  - {fileID: 11400000, guid: c22a1a3b8741bdf4b83887519ddfbf18, type: 2}
   baseCard: {fileID: 568110548140520245, guid: ecb8e16a7a26d294292adb3015b7201d, type: 3}
-  playAreaSecond: {fileID: 0}
-  brotherhoodAreaSecond: {fileID: 0}
-  brotherhoodsAreaMain: {fileID: 0}
-  playAreaMain: {fileID: 0}
+  brotherhoodAreaSecond: {fileID: 1111511401}
+  playAreaSecond: {fileID: 1372045480}
   handSecond: {fileID: 304015489}
+  brotherhoodsAreaMain: {fileID: 1162051678}
+  playAreaMain: {fileID: 1637678383}
   handMain: {fileID: 21217873}
   initialNumberOfCards: 6
+  redBrotherhoodPoints: 0
+  greenBrotherhoodPoints: 0
+  blueBrotherhoodPoints: 0
+  greyBrotherhoodPoints: 0
+  magicalBrotherhoodPoints: 0
 --- !u!1 &1111511401
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,7 +910,7 @@ BoxCollider:
   m_GameObject: {fileID: 1162051678}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 27, y: 3, z: 0.3}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1124,7 +1131,7 @@ BoxCollider:
   m_GameObject: {fileID: 1637678383}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 27, y: 3, z: 0.3}
   m_Center: {x: 0, y: 0, z: 0}
