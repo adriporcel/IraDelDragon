@@ -872,7 +872,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1162051679}
-  - component: {fileID: 1162051682}
   - component: {fileID: 1162051683}
   m_Layer: 5
   m_Name: '@BrotherhoodAreaMain'
@@ -901,19 +900,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -1.25}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
---- !u!65 &1162051682
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1162051678}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 27, y: 3, z: 0.3}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1162051683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1093,7 +1079,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1637678384}
-  - component: {fileID: 1637678387}
   - component: {fileID: 1637678388}
   m_Layer: 5
   m_Name: '@PlayAreaMain'
@@ -1122,19 +1107,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -4.35}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
---- !u!65 &1637678387
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1637678383}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 27, y: 3, z: 0.3}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1637678388
 MonoBehaviour:
   m_ObjectHideFlags: 0
