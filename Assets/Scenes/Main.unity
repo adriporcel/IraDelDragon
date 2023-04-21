@@ -488,6 +488,10 @@ MonoBehaviour:
   selectedCardPreviousParent: {fileID: 0}
   selectedCard: {fileID: 0}
   target: {fileID: 0}
+  mouseClickCoords: {x: 0, y: 0}
+  clickHoldDistanceTrigger: 10
+  clickHoldTimer: 2
+  touchscreenPrecissionMultiplier: 10
 --- !u!1 &641410401
 GameObject:
   m_ObjectHideFlags: 0

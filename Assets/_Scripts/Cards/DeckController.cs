@@ -343,6 +343,8 @@ public class DeckController : MonoBehaviour
             newCard.transform.Rotate(new Vector3(0, 0, 1), 180);
             newCard.transform.SetParent(handSecond.transform);
         }
+
+        CheckCardsInHandDeployReadiness();
     }
 
     void LoadAllGameCards()

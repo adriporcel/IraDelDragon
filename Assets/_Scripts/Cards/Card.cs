@@ -48,8 +48,10 @@ public class Card : MonoBehaviour
     void Start()
     {
         // Set card artwork
-        Material material = new Material(Shader.Find("Standard"));
-        material.mainTexture = ScriptableCard.artwork;
+        Material material = new(Shader.Find("Standard"))
+        {
+            mainTexture = ScriptableCard.artwork
+        };
         _front.GetComponent<MeshRenderer>().material = material;
 
         // Add script to card if specified
@@ -87,7 +89,7 @@ public class Card : MonoBehaviour
         if (CardType != CardType.brotherhood || !DeployedOnBoard || !AvailableToUse)
             return;
 
-        ActiveBrotherhood = roundReset ? false : !ActiveBrotherhood;
+        ActiveBrotherhood = !roundReset && !ActiveBrotherhood;
         activeIndicator.SetActive(ActiveBrotherhood); // DEBUG: Temporary visual indicator (trello task)
     }
 
