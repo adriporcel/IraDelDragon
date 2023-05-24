@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Experimental.AI;
 
 public class Card : MonoBehaviour
 {
@@ -20,9 +21,9 @@ public class Card : MonoBehaviour
     // Visual feedback
     [SerializeField] GameObject activeIndicator, usedIndicator, readyToDeployIndicator;
     bool availableToUseLastCheck = true;
-
     public string Name { get { return ScriptableCard.name; } }
-
+    public Texture2D Artwork { get { return ScriptableCard.artwork; } }
+    
     // Card cost
     public int RedCost { get { return ScriptableCard.redCost; } }
     public int GreenCost { get { return ScriptableCard.greenCost; } }
@@ -50,7 +51,7 @@ public class Card : MonoBehaviour
         // Set card artwork
         Material material = new(Shader.Find("Standard"))
         {
-            mainTexture = ScriptableCard.artwork
+            mainTexture = Artwork
         };
         _front.GetComponent<MeshRenderer>().material = material;
 
