@@ -488,9 +488,12 @@ MonoBehaviour:
   selectedCardPreviousParent: {fileID: 0}
   selectedCard: {fileID: 0}
   target: {fileID: 0}
+  hoverOverCard: {fileID: 0}
   mouseClickCoords: {x: 0, y: 0}
   clickHoldDistanceTrigger: 10
-  clickHoldTimer: 2
+  magnifyCardTimerHand: 0.1
+  magnifyCardTimerBoard: 0.5
+  cardMagnifiedPrefab: {fileID: 568110548140520245, guid: f9c109758d6e53547b655a13595f10c8, type: 3}
   touchscreenPrecissionMultiplier: 10
 --- !u!1 &641410401
 GameObject:

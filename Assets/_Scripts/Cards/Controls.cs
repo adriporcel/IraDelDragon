@@ -7,28 +7,23 @@ using static UnityEngine.GraphicsBuffer;
 public class Controls : MonoBehaviour
 {
     [SerializeField] Transform selectedCardPreviousParent;
-    [SerializeField] Card selectedCard, target;
+    [SerializeField] Card selectedCard, target, hoverOverCard;
     //
     [SerializeField] Vector2 mouseClickCoords;
     [SerializeField] float clickHoldDistanceTrigger;
-    [SerializeField] float clickHoldTimer;
+    [SerializeField] float magnifyCardTimerHand, magnifyCardTimerBoard;
+    [SerializeField] GameObject cardMagnifiedPrefab;
     [Range(1, 20)][SerializeField] int touchscreenPrecissionMultiplier;
 
-    List<Collider> playAreaColliders = new();
     DeckController deckController;
 
+    GameObject cardMagnifiedGameObject;
+    float magnifyCardTimerStart;
     bool clickHoldDistanceSurpassed;
-    bool magnifiedCard;
-    float clickStartTime;
 
     void Start()
     {
         deckController = FindObjectOfType<DeckController>();
-
-        foreach (GameObject area in GameObject.FindGameObjectsWithTag("dropArea"))
-        {
-            playAreaColliders.Add(area.GetComponent<Collider>());
-        }
 
         deckController.CheckCardsInHandDeployReadiness();
     }
@@ -36,24 +31,49 @@ public class Controls : MonoBehaviour
     void Update()
     {
         Vector2 mousePosScreen = Input.mousePosition;
+        // Distance from camera
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosScreen.x,
                                                                                 mousePosScreen.y,
-                                                                                10.21f)); // Distance from camera
+                                                                                10.21f)); 
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         var mouseOverObject = Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity);
-
-        if (Input.GetMouseButtonDown(1) && hit.collider.CompareTag("card"))
+        
+        // Card magnification
+        if (hoverOverCard != null && hit.collider.gameObject != hoverOverCard.gameObject)
         {
-            ToggleCardMagnify(true);
+            hoverOverCard = null;
+            ToggleCardMagnify(false);
+            magnifyCardTimerStart = 0;
+        }
+        if (!Input.GetKeyDown(0)
+            && mouseOverObject
+            && hit.collider.gameObject.layer == 0
+            && hit.collider.CompareTag("card"))
+        {
+            hoverOverCard = hit.collider.GetComponent<Card>();
+
+            // TODO: take into account who is playing, to be implemented with multiplayer
+            if (hoverOverCard.Owner == Players.main || hoverOverCard.Owner != Players.main && hoverOverCard.DeployedOnBoard)
+            {
+                if (magnifyCardTimerStart == 0)
+                {
+                    magnifyCardTimerStart = Time.time;
+                }
+                else if (magnifyCardTimerStart + magnifyCardTimerHand < Time.time
+                         && !hoverOverCard.DeployedOnBoard
+                         || magnifyCardTimerStart + magnifyCardTimerBoard < Time.time
+                         && hoverOverCard.DeployedOnBoard)
+                {
+                    ToggleCardMagnify(true);
+                }
+            }
         }
 
-        // Left click, move cards and actions
+        // Move cards and actions
         if (Input.GetMouseButtonDown(0))
         {
-            ToggleCardMagnify(false);
             mouseClickCoords = mousePosScreen;
-            clickStartTime = Time.time;
 
             // If a card is selected and no other card is currently selected
             if (selectedCard == null && hit.collider.CompareTag("card"))
@@ -69,12 +89,8 @@ public class Controls : MonoBehaviour
         }
         else if (Input.GetMouseButton(0) && selectedCard != null && mouseOverObject)
         {
-            if (clickStartTime + clickHoldTimer < Time.time && !magnifiedCard)
-            {
-                ToggleCardMagnify(true);
-            }
             // Checks if the mouse has moved outside of the initial click area range, to trigger movement of the card
-            else if (clickHoldDistanceSurpassed
+            if (clickHoldDistanceSurpassed
                 || Vector3.Distance(mousePosScreen, mouseClickCoords) > TouchscreenPrecissionMultiplier(clickHoldDistanceTrigger))
             {
                 clickHoldDistanceSurpassed = true;
@@ -105,48 +121,45 @@ public class Controls : MonoBehaviour
             {
                 Card _card = selectedCard.GetComponent<Card>();
 
-                if (!magnifiedCard)
+                // Activates ONLY brotherhood, Deployed and Available checks done in ToggleActivateBrotherhood
+                if (!clickHoldDistanceSurpassed)
                 {
-                    // Activates ONLY brotherhood, Deployed and Available checks done in ToggleActivateBrotherhood
-                    if (!clickHoldDistanceSurpassed)
+                    _card.ToggleActivateBrotherhood();
+                    deckController.CountBrotherhoodPoints();
+                    deckController.CheckCardsInHandDeployReadiness();
+                }
+
+                if (!ScreenInEdgeBottomDetection(0.15f)) // If card outside the bottom 15% of the screen
+                {
+                    if (!_card.DeployedOnBoard) // Deploy card on corresponding board
                     {
-                        _card.ToggleActivateBrotherhood();
-                        deckController.CountBrotherhoodPoints();
-                        deckController.CheckCardsInHandDeployReadiness();
+                        selectedCard.transform.SetParent(deckController.CorrectBoardArea(_card));
+                        // TODO: Implement Items, Enchantments and Instant cards
+                    }
+                    else if (_card.DeployedOnBoard
+                             && target != null
+                             && target.Owner == Players.secondary) // Execute card action
+                    {
+                        // TODO
+                    }
+                    else if (_card.DeployedOnBoard) // && (target == null || target.Owner == Players.main)
+                    {
+                        selectedCard.transform.SetParent(deckController.CorrectBoardArea(_card));
                     }
 
-                    if (!ScreenInEdgeBottomDetection(0.15f)) // If card outside the bottom 15% of the screen
+                    deckController.SpendBrotherhoodsPoints(_card);
+                    _card.ReadyToDeploy = false;
+                    _card.DeployedOnBoard = true;
+                }
+                else // If card inside the bottom 15% of the screen
+                {
+                    if (selectedCard.DeployedOnBoard)
                     {
-                        if (!_card.DeployedOnBoard) // Deploy card on corresponding board
-                        {
-                            selectedCard.transform.SetParent(deckController.CorrectBoardArea(_card));
-                            // TODO: Implement Items, Enchantments and Instant cards
-                        }
-                        else if (_card.DeployedOnBoard
-                                 && target != null
-                                 && target.Owner == Players.secondary) // Execute card action
-                        {
-                            // TODO
-                        }
-                        else if (_card.DeployedOnBoard) // && (target == null || target.Owner == Players.main)
-                        {
-                            selectedCard.transform.SetParent(deckController.CorrectBoardArea(_card));
-                        }
-
-                        deckController.SpendBrotherhoodsPoints(_card);
-                        _card.ReadyToDeploy = false;
-                        _card.DeployedOnBoard = true;
+                        selectedCard.transform.SetParent(deckController.CorrectBoardArea(_card));
                     }
-                    else // If card inside the bottom 15% of the screen
+                    else // Return to hand
                     {
-                        if (selectedCard.DeployedOnBoard)
-                        {
-                            selectedCard.transform.SetParent(deckController.CorrectBoardArea(_card));
-                        }
-                        else // Return to hand
-                        {
-                            selectedCard.transform.SetParent(deckController.CorrectHand(_card));
-                        }
+                        selectedCard.transform.SetParent(deckController.CorrectHand(_card));
                     }
                 }
 
@@ -171,7 +184,7 @@ public class Controls : MonoBehaviour
         int mouseClampedYPosition = (int)Math.Clamp(Input.mousePosition.y, 0f, screenMaxHeight);
 
         // Returns true if the mouse is within the specified percentage of the bottom of the screen (_distance)
-        return mouseClampedYPosition <= screenMaxHeight * _distance ? true : false;
+        return mouseClampedYPosition <= screenMaxHeight * _distance;
     }
 
     float TouchscreenPrecissionMultiplier(float number)
@@ -186,10 +199,25 @@ public class Controls : MonoBehaviour
         }
     }
 
-    void ToggleCardMagnify(bool display)
+    /// <summary>
+    /// Instantiates a MagnifiedCard game object or Destroys it depending on parameters.
+    /// </summary>
+    /// <param name="_display">Magnified card is diplayed or not depending on this.</param>
+    void ToggleCardMagnify(bool _display)
     {
-        magnifiedCard = display;
-        print($"magnify card is active: {magnifiedCard}");
+        if (!_display)
+        {
+            Destroy(cardMagnifiedGameObject);
+            cardMagnifiedGameObject = null;
+            return;
+        }
+        else if (cardMagnifiedGameObject != null)
+            return;
+
+        // Instantiates magnified card and passes on hoverCard information to it.
+        cardMagnifiedGameObject = Instantiate(cardMagnifiedPrefab);
+        CardMagnified _cardMagnified = cardMagnifiedGameObject.GetComponent<CardMagnified>();
+        _cardMagnified.Card = hoverOverCard;
     }
 
     void ClearSelected()
