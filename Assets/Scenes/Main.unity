@@ -471,8 +471,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState: 0
   selectedCard: {fileID: 0}
+  mainPlayerInitialHealth: 21
+  secondaryPlayerInitialHealth: 21
   debugMode: 0
   deckController: {fileID: 848653165}
+  mainPlayerHealth: 0
+  secondaryPlayerHealth: 0
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
