@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public bool DebugMode { get { return debugMode; } }
+
     public static GameManager instance;
 
     public GameState gameState;
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
         }
 
         deckController.InitialDeal(); // DEBUG remove
+        print($"Debug mode set to: {debugMode}"); // DEBUG
     }
 
     private void Update()

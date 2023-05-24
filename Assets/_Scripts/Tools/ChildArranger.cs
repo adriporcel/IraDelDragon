@@ -53,10 +53,9 @@ public class ChildArranger : MonoBehaviour
         for (int i = 0; i < childCount; i++)
         {
             Transform child = transform.GetChild(i);
-            Vector3 childPosition = new Vector3(parentPosition.x + (i * distanceBetweenChildren) - halfDistance,
-                                                parentPosition.y,
-                                                parentPosition.z
-                                                );
+            Vector3 childPosition = new (parentPosition.x + (i * distanceBetweenChildren) - halfDistance,
+                                         parentPosition.y,
+                                         parentPosition.z);
             
             child.GetComponent<SmoothMove>().MoveTo(childPosition);
         }
